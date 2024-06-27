@@ -42,9 +42,7 @@ const query = "primary and secondary schools in nigeria";
           return;
         }
 
-        console.log("wrapper", wrapper);
-
-        await new Promise<void>((resolve, reject) => {
+        await new Promise<void>((resolve) => {
           let totalHeight = 0;
           const distance = 1000;
           const scrollDelay = 5000;
@@ -145,6 +143,7 @@ const query = "primary and secondary schools in nigeria";
       const filePath = path.join(__dirname, "schools.json");
       if (!fs.existsSync(filePath)) {
         fs.writeFileSync(filePath, JSON.stringify(schools, null, 2));
+        return;
       }
 
       let schoolsData: School[] = [];
