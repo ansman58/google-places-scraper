@@ -24,7 +24,7 @@ const query = "primary and secondary schools in nigeria";
 
 (async () => {
   try {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
 
     console.log("Running tests...");
     const page = await browser.newPage();
@@ -85,16 +85,19 @@ const query = "primary and secondary schools in nigeria";
     const parents: Cheerio<Element>[] = [];
     aTags.each((i, el) => {
       const href = $(el).attr("href");
-      if (!href) {
-        return;
-      }
-      console.log("href", href);
+      if (!href) return;
+
       if (href.includes("/maps/place/")) {
         parents.push($(el).parent() as Cheerio<Element>);
       }
     });
 
     const schools: School[] = [];
+
+    if (!parents || parents.length === 0) {
+      console.log("No schools found");
+      return;
+    }
 
     parents.forEach((parent) => {
       const url = parent.find("a").attr("href");
